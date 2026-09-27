@@ -1,0 +1,11 @@
+build/
+install/
+log/
+.reference-usb2fdcan/
+__pycache__/
+*.pyc
+.vscode/
+
+# Local vendor reference documents; do not publish.
+/*.docx
+/*.zip

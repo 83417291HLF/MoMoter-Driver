@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="motorevo_pa43_test">
+  <xacro:arg name="backend" default="meow_usb"/>
+  <xacro:arg name="device" default="/dev/USB2CAN0"/>
+  <xacro:arg name="library_path" default="libusb_fdcan.so"/>
+  <xacro:arg name="channel" default="1"/>
+  <xacro:arg name="motor_id" default="1"/>
+
+  <link name="base_link"/>
+  <link name="motor_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="joint1" type="revolute">
+    <parent link="base_link"/>
+    <child link="motor_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" velocity="2.0" effort="5.0"/>
+  </joint>
+
+  <ros2_control name="MotorevoSystem" type="system">
+    <hardware>
+      <plugin>motorevo_ros2/MotorevoSystem</plugin>
+      <param name="backend">$(arg backend)</param>
+      <param name="device">$(arg device)</param>
+      <param name="library_path">$(arg library_path)</param>
+      <param name="channel">$(arg channel)</param>
+      <param name="can_fd">true</param>
+      <param name="bitrate_switch">true</param>
+      <param name="nominal_bitrate">1000000</param>
+      <param name="data_bitrate">5000000</param>
+      <param name="broadcast_mode">true</param>
+      <param name="feedback_timeout_ms">100</param>
+      <param name="halt_on_fault">true</param>
+      <param name="position_min">-12.5</param>
+      <param name="position_max">12.5</param>
+      <param name="velocity_min">-10.0</param>
+      <param name="velocity_max">10.0</param>
+      <param name="kp_min">0.0</param>
+      <param name="kp_max">250.0</param>
+      <param name="kd_min">0.0</param>
+      <param name="kd_max">50.0</param>
+      <param name="torque_min">-50.0</param>
+      <param name="torque_max">50.0</param>
+    </hardware>
+    <joint name="joint1">
+      <param name="motor_id">$(arg motor_id)</param>
+      <param name="kp">10.0</param>
+      <param name="kd">1.0</param>
+      <param name="direction">1</param>
+      <param name="offset">0.0</param>
+      <command_interface name="position">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-2.0</param>
+        <param name="max">2.0</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="min">-5.0</param>
+        <param name="max">5.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+      <state_interface name="temperature"/>
+      <state_interface name="fault_code"/>
+      <state_interface name="enabled"/>
+    </joint>
+  </ros2_control>
+</robot>
+

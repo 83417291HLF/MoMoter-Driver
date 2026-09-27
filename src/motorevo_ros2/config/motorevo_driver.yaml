@@ -1,0 +1,38 @@
+motorevo_driver:
+  ros__parameters:
+    joint_names: [joint1]
+    motor_ids: [1]
+
+    # MIT mode gains. Start with low gains and an unloaded output shaft.
+    kp: [10.0]
+    kd: [1.0]
+    update_rate: 500.0
+    command_timeout_ms: 100
+    disable_on_timeout: true
+    broadcast_mode: true
+    inter_frame_delay_us: 200
+
+    transport:
+      backend: meow_usb
+      device: /dev/USB2CAN0
+      library_path: libusb_fdcan.so
+      channel: 1
+      can_fd: true
+      bitrate_switch: true
+      nominal_bitrate: 1000000
+      data_bitrate: 5000000
+
+    # These are protocol coding ranges, not robot safety limits. They must equal
+    # motor parameters 24..35 shown by Motorevo Studio.
+    limits:
+      position_min: -12.5
+      position_max: 12.5
+      velocity_min: -10.0
+      velocity_max: 10.0
+      kp_min: 0.0
+      kp_max: 250.0
+      kd_min: 0.0
+      kd_max: 50.0
+      torque_min: -50.0
+      torque_max: 50.0
+

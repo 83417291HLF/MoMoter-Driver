@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<library path="motorevo_system">
+  <class
+    name="motorevo_ros2/MotorevoSystem"
+    type="motorevo_ros2::MotorevoSystem"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>Motorevo PA-series CAN/CAN FD ros2_control hardware interface.</description>
+  </class>
+</library>
